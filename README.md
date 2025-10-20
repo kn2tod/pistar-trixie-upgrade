@@ -39,6 +39,7 @@ steps given here, but with additions to handle Pi-Star specifically:
    <https://linux.how2shout.com/how-to-upgrade-debian-12-bookworm-to-13-trixie/>
 
 Outline:
+
    (Modify boot for generic devices?)
    
    Shutdown key Pi-Star processes so they don't interfer with the update process
