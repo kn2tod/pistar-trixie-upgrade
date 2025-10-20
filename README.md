@@ -35,6 +35,7 @@ Here are the basic steps taken to upgrade from Bookworm to Trixie, adapted from 
 steps given here, but with additions to handle Pi-Star specifically:
 
    <https://forums.raspberrypi.com/viewtopic.php?t=392376>
+   
    <https://linux.how2shout.com/how-to-upgrade-debian-12-bookworm-to-13-trixie/>
 
 Outline:
