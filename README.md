@@ -38,6 +38,15 @@ steps given here, but with additions to handle Pi-Star specifically:
    
    <https://linux.how2shout.com/how-to-upgrade-debian-12-bookworm-to-13-trixie/>
 
+*** NOTE ***
+
+The best way to run this script is via a WIRED connection.  If using a WIRELESS connection,
+and running this script via a browser window, you may lose the connection during the 
+update/upgrade process and may have to restart the machine and run the script again, risking
+missing some crucial prompts.  Best option here is to run the script with a locally attached
+monitor and keyboard when connecting wirelessly.
+
+
 Outline:
 
    (Modify boot for generic devices?)
