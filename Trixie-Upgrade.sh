@@ -86,35 +86,36 @@ sudo systemctl stop nextiondriver.service   #2>/dev/null
 read -p "-- press any key to continue --" ipq
 
 echo "===============================> Make it up-to-date:"
-#if [ ! "$(grep trixie /etc/apt/sources.list)" ]; then   # (skip if this proc has been restarted)
-
 phpp=$(php -v 2> /dev/null | sed -n "s/PHP \([0-9].[0-9]\).*/\1/p")  # save current php version for later
 echo "-- Current PHP version: ${phpp}"
 py=$(python -V 3>&1 1>&2 2>&3 3>&1 1>&2)
 echo "-- Current Python version: ${py}"
 echo " "
 
+if [ ! "$(grep trixie /etc/apt/sources.list)" ]; then   # (skip if this proc has been restarted)
+
 read -p "--update current system: (Y/n)? " ipq
 if [ "$ipq" == "Y" ]; then
 # pre-migration/prep: bring system update-to-date; clean:
-sudo apt update
-read -p "-- press any key to continue --" ipq
-echo "==="
-sudo apt upgrade --fix-missing --fix-broken -y
-read -p "-- press any key to continue --" ipq
-echo "==="
-sudo apt dist-upgrade
-read -p "-- press any key to continue --" ipq
-echo "==="
-#sudo apt purge -y raspberrypi-ui-mods   # ?????
-#echo "==="
-echo "===============================> Cleanup:"
-sudo apt autoremove -y
-echo "==="
-sudo apt autoclean
-echo "==="
-echo "===============================> Preliminary updates finished"
-read -p "-- press any key to continue --" ipq
+  sudo apt update
+  read -p "-- press any key to continue --" ipq
+  echo "==="
+  sudo apt upgrade --fix-missing --fix-broken -y
+  read -p "-- press any key to continue --" ipq
+  echo "==="
+  sudo apt dist-upgrade -y
+  read -p "-- press any key to continue --" ipq
+  echo "==="
+# sudo apt purge -y raspberrypi-ui-mods   # ?????
+# echo "==="
+  echo "===============================> Cleanup:"
+  sudo apt autoremove -y
+  echo "==="
+  sudo apt autoclean
+  echo "==="
+  echo "===============================> Preliminary updates finished"
+  read -p "-- press any key to continue --" ipq
+fi
 fi
 # redirect: bookworm --> trixie:
 echo "===============================> Mod APT source lists for new OS:"
@@ -135,6 +136,10 @@ echo "===============================> Start OS upgrade:"
 
 sudo apt upgrade --without-new-pkgs --fix-missing --fix-broken -y $q
 echo "==="
+
+sudo dpkg --configure -a                # if restarting from a broken upgrade
+sudo apt --fix-broken install           # if restarting from a broken upgrade
+
 read -p "-- press any key to continue --" ipq
 sudo apt full-upgrade --fix-missing --fix-broken -y $q
 echo "==="
@@ -167,6 +172,8 @@ sudo apt install php${phpv}-mbstring -y
 echo "==="
 sudo apt install php${phpv}-zip      -y
 echo "==="
+sudo dpkg-query -l | grep --color=auto -i "php${phpv}"
+echo "==="
 
 # reset pm.* settings for PHP-FPM:
 sudo sed -i "s/^\(pm =\).*$/\1 dynamic/g"              /etc/php/${phpv}/fpm/pool.d/www.conf
@@ -185,7 +192,7 @@ read -p "-- press any key to continue --" ipq
 # Point NGINX to proper FPM:
 sudo sed -i "s/\/php${phpp}-fpm.sock/\/php${phpv}-fpm.sock/g" /etc/nginx/default.d/php.conf
 #sudo sed -i 's/ssl_protocols TLSv1 TLSv1.1 TLSv1.2/ssl_protocols TLSv1.2 TLSv1.3/p' /etc/nginx/nginx.conf   # ????
-cat /etc/nginx/default.d/p/php.conf
+cat /etc/nginx/default.d/php.conf
 echo "==="
 sudo nginx -t                          # config check
 read -p "-- press any key to continue --" ipq
@@ -279,6 +286,10 @@ read -p "-- press any key to continue --" ipq
 
 echo "=== /etc/dnsmasq.conf"
 $diffr /etc/dnsmasq.conf             /etc/dnsmasq.conf.dpkg-dist                # review?
+read -p "-- press any key to continue --" ipq
+
+echo "=== /etc/login.defs"
+$diffr /etc/login.defs               /etc/login.defs.dpkg-dist                  # review?
 read -p "-- press any key to continue --" ipq
 
 echo "=== /etc/bash.bashrc"
