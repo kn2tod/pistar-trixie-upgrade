@@ -134,6 +134,8 @@ echo "==="
 read -p "-- press any key to continue --" ipq
 echo "===============================> Start OS upgrade:"
 
+# ... DEBIAN_FRONTEND=noninteractive ...
+# ... -o Dpkg::Options::="--force-confold" ...
 sudo apt upgrade --without-new-pkgs --fix-missing --fix-broken -y $q
 echo "==="
 
@@ -141,6 +143,8 @@ sudo dpkg --configure -a                # if restarting from a broken upgrade
 sudo apt --fix-broken install           # if restarting from a broken upgrade
 
 read -p "-- press any key to continue --" ipq
+# ... DEBIAN_FRONTEND=noninteractive ...
+# ... -o Dpkg::Options::="--force-confold" ...
 sudo apt full-upgrade --fix-missing --fix-broken -y $q
 echo "==="
 read -p "-- press any key to continue --" ipq
@@ -230,6 +234,9 @@ sudo sed -i 's/^ServerKeyBits/# &/g'           /etc/ssh/sshd_config
 sudo sed -i 's/^RSAAuthentication/# &/g'       /etc/ssh/sshd_config
 sudo sed -i 's/^RhostsRSAAuthentication/# &/g' /etc/ssh/sshd_config
 
+# Fix discontinued SSH Host key:
+sudo sed -i 's/^HostKey.*_dsa_.*/#&/g'         /etc/ssh/sshd_config
+
 sudo sync; sudo sync
 echo "==============================> End of Bookworm-Trixie upgrade"
 echo " "
@@ -302,6 +309,10 @@ read -p "-- press any key to continue --" ipq
 
 echo "=== etc/ntpsec/ntp.conf"
 $diffr /etc/ntpsec/ntp.conf          /etc/ntpsec/ntp.conf.dpkg-dist             # review?
+read -p "-- press any key to continue --" ipq
+
+echo "=== etc/ssh/sshd_config"
+$diffr /etc/ssh/sshd_config          /etc/ssh/sshd_config.ucf-dist              # review?
 read -p "-- press any key to continue --" ipq
 
 echo "=== /etc/cron.hourly/fake-hwclock"
