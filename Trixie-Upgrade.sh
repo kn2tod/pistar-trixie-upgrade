@@ -237,6 +237,10 @@ sudo sed -i 's/^RhostsRSAAuthentication/# &/g' /etc/ssh/sshd_config
 # Fix discontinued SSH Host key:
 sudo sed -i 's/^HostKey.*_dsa_.*/#&/g'         /etc/ssh/sshd_config
 
+# install replacement for lastlog:
+sudo apt install lastlog2 -y
+sudo apt libpam-lastlog2  -y
+
 sudo sync; sudo sync
 echo "==============================> End of Bookworm-Trixie upgrade"
 echo " "
@@ -325,6 +329,10 @@ read -p "-- press any key to continue --" ipq
 
 echo "=== /etc/sudoers"
 $diffr /etc/sudoers                  /etc/sudoers.dpkg-dist
+read -p "-- press any key to continue --" ipq
+
+echo "=== /etc/samba/smb.conf"
+$diffr /etc/samba/smb.conf           /etc/samba/smb.conf.ucf-dist
 read -p "-- press any key to continue --" ipq
 
 #echo "=== 50unattneded-upgrades"
