@@ -238,8 +238,8 @@ sudo sed -i 's/^RhostsRSAAuthentication/# &/g' /etc/ssh/sshd_config
 sudo sed -i 's/^HostKey.*_dsa_.*/#&/g'         /etc/ssh/sshd_config
 
 # install replacement for lastlog:
-sudo apt install lastlog2 -y
-sudo apt libpam-lastlog2  -y
+sudo apt install lastlog2         -y
+sudo apt install libpam-lastlog2  -y
 
 sudo sync; sudo sync
 echo "==============================> End of Bookworm-Trixie upgrade"
