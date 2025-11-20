@@ -240,6 +240,10 @@ sudo sed -i 's/^HostKey.*_dsa_.*/#&/g'         /etc/ssh/sshd_config
 # install replacement for lastlog:
 sudo apt install lastlog2         -y
 sudo apt install libpam-lastlog2  -y
+sudo ln /usr/bin/lastlog2 /usr/bin/lastlog
+
+# fix shell-in-a-box MOTD problem:
+sudo cp /etc/pam.d/login /etc/pam.d/remote
 
 sudo sync; sudo sync
 echo "==============================> End of Bookworm-Trixie upgrade"
