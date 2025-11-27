@@ -139,8 +139,8 @@ echo "===============================> Start OS upgrade:"
 sudo apt upgrade --without-new-pkgs --fix-missing --fix-broken -y $q
 echo "==="
 
-sudo dpkg --configure -a                # if restarting from a broken upgrade
 sudo apt --fix-broken install           # if restarting from a broken upgrade
+sudo dpkg --configure -a                # if restarting from a broken upgrade
 
 read -p "-- press any key to continue --" ipq
 # ... DEBIAN_FRONTEND=noninteractive ...
@@ -186,9 +186,9 @@ sudo sed -i "s/^\(pm.start_servers =\).*$/\1 8/g"      /etc/php/${phpv}/fpm/pool
 sudo sed -i "s/^\(pm.min_spare_servers =\).*$/\1 4/g"  /etc/php/${phpv}/fpm/pool.d/www.conf
 sudo sed -i "s/^\(pm.max_spare_servers =\).*$/\1 8/g"  /etc/php/${phpv}/fpm/pool.d/www.conf
 
-sudo systemctl restart php${phpv}-fpm
+sudo systemctl restart --no-pager php${phpv}-fpm
 echo "==="
-sudo systemctl status  php${phpv}-fpm
+sudo systemctl status  --no-pager php${phpv}-fpm
 echo "==="
 
 read -p "-- press any key to continue --" ipq
@@ -203,10 +203,10 @@ read -p "-- press any key to continue --" ipq
 
 sudo truncate -s 0 /var/log/nginx/error.log   # clear eroneous msgs that occur during upgrade
 
-sudo systemctl restart nginx           # restart just-in-case
-sudo systemctl status  nginx
-sudo systemctl restart php${phpv}-fpm  # restart just-in-case
-sudo systemctl status  php${phpv}-fpm
+sudo systemctl restart  --no-pager nginx           # restart just-in-case
+sudo systemctl status   --no-pager nginx
+sudo systemctl restart  --no-pager php${phpv}-fpm  # restart just-in-case
+sudo systemctl status   --no-pager php${phpv}-fpm
 
 sudo systemctl disable exim4.service   # reactivated by migration?!?
 sudo systemctl mask exim4.service
@@ -329,6 +329,10 @@ read -p "-- press any key to continue --" ipq
 
 echo "=== /etc/default/hostapd"
 $diffr /etc/default/hostapd          /etc/default/hostapd.dpkg-dist
+read -p "-- press any key to continue --" ipq
+
+echo "=== /etc/sudoers"
+$diffr /etc/sudoers                  /etc/sudoers.dpkg-dist
 read -p "-- press any key to continue --" ipq
 
 echo "=== /etc/sudoers"
