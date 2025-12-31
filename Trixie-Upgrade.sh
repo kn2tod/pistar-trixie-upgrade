@@ -335,15 +335,11 @@ echo "=== /etc/sudoers"
 $diffr /etc/sudoers                  /etc/sudoers.dpkg-dist
 read -p "-- press any key to continue --" ipq
 
-echo "=== /etc/sudoers"
-$diffr /etc/sudoers                  /etc/sudoers.dpkg-dist
-read -p "-- press any key to continue --" ipq
-
 echo "=== /etc/samba/smb.conf"
 $diffr /etc/samba/smb.conf           /etc/samba/smb.conf.ucf-dist
 read -p "-- press any key to continue --" ipq
 
-#echo "=== 50unattneded-upgrades"
+#echo "=== 50unattended-upgrades"
 #$diffr /usr/share/unattended-upgrades/50unattended-upgrades /etc/apt/apt.conf.d/
 #read -p "-- press any key to continue --" ipq
 
